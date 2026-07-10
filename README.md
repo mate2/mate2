@@ -1,6 +1,7 @@
 ### Hi, I'm Jérôme 👋
 
 **Senior Frontend & Fullstack Engineer · Platform & Architecture**
+<br>
 Designer → Fullstack → Architect
 
 I didn't start in code — I started in design, then taught myself to ship whole apps end to end and never stopped widening the stack. Twenty-ish years in, I'm a frontend-first engineer comfortable across the whole thing: React, Next.js, TypeScript and React Native on the front (Svelte/SvelteKit whenever I get the choice), Node, GraphQL and serverless AWS behind it.
