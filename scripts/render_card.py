@@ -19,11 +19,12 @@ import sys
 from collections import defaultdict
 
 MODEL_COLORS = {
-    "opus": "#d97757",
+    "opus": "#c85f2e",
     "sonnet": "#5a8dee",
-    "haiku": "#7fd8a6",
+    "haiku": "#2fa86e",
 }
 DEFAULT_COLOR = "#999999"
+SURFACE = "#0d1117"
 
 
 def short_name(model):
@@ -39,54 +40,84 @@ def short_name(model):
 
 def aggregate(data_dir):
     totals = defaultdict(float)
-    machines = []
+    by_machine = defaultdict(float)
     for path in glob.glob(f"{data_dir}/*.json"):
         with open(path) as fh:
             snap = json.load(fh)
-        machines.append(snap.get("machine", "?"))
+        machine = snap.get("machine", "?")
         for model, minutes in snap.get("minutes_by_model", {}).items():
             totals[short_name(model)] += minutes
-    return totals, machines
+            by_machine[machine] += minutes
+    return totals, by_machine
 
 
-def render_svg(totals, machines, out_path):
+def format_duration(minutes):
+    h, m = divmod(round(minutes), 60)
+    return f"{h}h {m:02d}m" if h else f"{m}m"
+
+
+def render_svg(totals, by_machine, out_path):
     grand_total = sum(totals.values()) or 1
-    width, height = 420, 120
-    bar_x, bar_y, bar_w, bar_h = 20, 70, 380, 22
+    has_breakdown = len(by_machine) > 1
+    width = 420
+    height = 136 if has_breakdown else 120
+    bar_y_offset = 16 if has_breakdown else 0
+    bar_x, bar_y, bar_w, bar_h = 20, 70 + bar_y_offset, 380, 22
+    gap = 2  # surface-colored gap between stacked segments
+
+    ranked = sorted(totals.items(), key=lambda x: -x[1])
 
     segments = []
     x_cursor = bar_x
-    for model, minutes in sorted(totals.items(), key=lambda x: -x[1]):
+    for i, (model, minutes) in enumerate(ranked):
         frac = minutes / grand_total
-        seg_w = frac * bar_w
+        seg_w = frac * bar_w - (gap if i < len(ranked) - 1 else 0)
+        seg_w = max(seg_w, 0)
         color = MODEL_COLORS.get(model, DEFAULT_COLOR)
         segments.append(
             f'<rect x="{x_cursor:.1f}" y="{bar_y}" width="{seg_w:.1f}" '
             f'height="{bar_h}" fill="{color}" />'
         )
-        x_cursor += seg_w
+        x_cursor += seg_w + gap
 
     legend = []
-    ly = 100
+    ly = 100 + bar_y_offset
     lx = 20
-    for model, minutes in sorted(totals.items(), key=lambda x: -x[1]):
+    for model, minutes in ranked:
         pct = 100 * minutes / grand_total
         color = MODEL_COLORS.get(model, DEFAULT_COLOR)
         legend.append(
             f'<circle cx="{lx}" cy="{ly}" r="4" fill="{color}" />'
             f'<text x="{lx+10}" y="{ly+4}" font-size="11" '
-            f'font-family="Segoe UI, sans-serif" fill="#333">'
+            f'font-family="Segoe UI, sans-serif" fill="#e6edf3">'
             f'{model.capitalize()} {pct:.0f}%</text>'
         )
         lx += 110
 
+    breakdown_line = ""
+    if has_breakdown:
+        parts = " &#183; ".join(
+            f"{machine} {format_duration(minutes)}"
+            for machine, minutes in sorted(by_machine.items(), key=lambda x: -x[1])
+        )
+        breakdown_line = (
+            f'<text x="20" y="64" font-size="11" font-family="Segoe UI, sans-serif" '
+            f'fill="#8b949e">{parts}</text>'
+        )
+
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">
-  <rect width="{width}" height="{height}" rx="10" fill="#0d1117" />
+  <defs>
+    <clipPath id="bar-clip">
+      <rect x="{bar_x}" y="{bar_y}" width="{bar_w}" height="{bar_h}" rx="4" />
+    </clipPath>
+  </defs>
+  <rect width="{width}" height="{height}" rx="10" fill="{SURFACE}" />
   <text x="20" y="30" font-size="15" font-family="Segoe UI, sans-serif"
         fill="#e6edf3" font-weight="bold">Claude Code — last 7 days</text>
   <text x="20" y="50" font-size="11" font-family="Segoe UI, sans-serif"
-        fill="#8b949e">{len(machines)} machine(s) &#183; {grand_total:.0f} min active</text>
-  {''.join(segments)}
+        fill="#8b949e">{len(by_machine)} machine(s) &#183; {format_duration(grand_total)} active</text>
+  {breakdown_line}
+  <g clip-path="url(#bar-clip)">{''.join(segments)}</g>
   {''.join(legend)}
 </svg>'''
 
@@ -97,9 +128,9 @@ def render_svg(totals, machines, out_path):
 def main():
     data_dir = sys.argv[1] if len(sys.argv) > 1 else "data"
     out_path = sys.argv[2] if len(sys.argv) > 2 else "claude-usage.svg"
-    totals, machines = aggregate(data_dir)
-    render_svg(totals, machines, out_path)
-    print(f"Rendered {out_path} from {len(machines)} machine(s)")
+    totals, by_machine = aggregate(data_dir)
+    render_svg(totals, by_machine, out_path)
+    print(f"Rendered {out_path} from {len(by_machine)} machine(s)")
 
 
 if __name__ == "__main__":
