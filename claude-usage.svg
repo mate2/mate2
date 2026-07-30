@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="120">
+  <rect width="420" height="120" rx="10" fill="#0d1117" />
+  <text x="20" y="30" font-size="15" font-family="Segoe UI, sans-serif"
+        fill="#e6edf3" font-weight="bold">Claude Code — last 7 days</text>
+  <text x="20" y="50" font-size="11" font-family="Segoe UI, sans-serif"
+        fill="#8b949e">2 machine(s) &#183; 2202 min active</text>
+  <rect x="20.0" y="70" width="270.0" height="22" fill="#d97757" /><rect x="290.0" y="70" width="109.6" height="22" fill="#5a8dee" /><rect x="399.6" y="70" width="0.4" height="22" fill="#999999" />
+  <circle cx="20" cy="100" r="4" fill="#d97757" /><text x="30" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#333">Opus 71%</text><circle cx="130" cy="100" r="4" fill="#5a8dee" /><text x="140" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#333">Sonnet 29%</text><circle cx="240" cy="100" r="4" fill="#999999" /><text x="250" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#333">Other 0%</text>
+</svg>
