@@ -23,5 +23,7 @@ Outside the day job I build a personal ecosystem for the love of it — a named 
 <sub>Stack: TypeScript · React · Next.js · Svelte/SvelteKit · React Native · Node · GraphQL · Tauri · Electron · AWS · Vercel · Docker · MongoDB · PostgreSQL</sub>
 
 ---
+![Claude Code usage](./claude-usage.svg)
+---
 
 **↓ A few things I'm proud of are pinned below.**

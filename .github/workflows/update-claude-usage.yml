@@ -1,0 +1,31 @@
+name: Update Claude usage card
+
+on:
+  schedule:
+    - cron: "0 17 * * *"   # ~03:00 Melbourne (AEST, adjust for DST if it matters to you)
+  workflow_dispatch:        # allows manual "Run workflow" button too
+
+jobs:
+  build-card:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout profile repo
+        uses: actions/checkout@v4
+
+      - name: Checkout private usage-data repo
+        uses: actions/checkout@v4
+        with:
+          repository: mate2/claude-usage-data
+          token: ${{ secrets.USAGE_DATA_REPO_TOKEN }}
+          path: usage-data
+
+      - name: Render card
+        run: python3 scripts/render_card.py usage-data claude-usage.svg
+
+      - name: Commit card if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add claude-usage.svg
+          git diff --cached --quiet || git commit -m "chore: update Claude usage card"
+          git push
