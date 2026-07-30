@@ -74,19 +74,24 @@ def render_svg(totals, out_path):
         )
         x_cursor += seg_w + gap
 
+    # Rough width estimate (Segoe UI/Arial at 11px averages ~6.2px/char) so the
+    # legend row can be centered under the bar instead of using a fixed stride.
+    CHAR_W, DOT_TO_TEXT, ITEM_GAP = 6.2, 14, 24
+    labels = [f"{model.capitalize()} {100 * minutes / grand_total:.0f}%" for model, minutes in ranked]
+    item_widths = [DOT_TO_TEXT + len(label) * CHAR_W for label in labels]
+    row_w = sum(item_widths) + ITEM_GAP * (len(labels) - 1)
+
     legend = []
     ly = 100
-    lx = 20
-    for model, minutes in ranked:
-        pct = 100 * minutes / grand_total
+    lx = bar_x + (bar_w - row_w) / 2
+    for (model, minutes), label, item_w in zip(ranked, labels, item_widths):
         color = MODEL_COLORS.get(model, DEFAULT_COLOR)
         legend.append(
-            f'<circle cx="{lx}" cy="{ly}" r="4" fill="{color}" />'
-            f'<text x="{lx+10}" y="{ly+4}" font-size="11" '
-            f'font-family="Segoe UI, sans-serif" fill="#e6edf3">'
-            f'{model.capitalize()} {pct:.0f}%</text>'
+            f'<circle cx="{lx:.1f}" cy="{ly}" r="4" fill="{color}" />'
+            f'<text x="{lx+10:.1f}" y="{ly+4}" font-size="11" '
+            f'font-family="Segoe UI, sans-serif" fill="#e6edf3">{label}</text>'
         )
-        lx += 110
+        lx += item_w + ITEM_GAP
 
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">
   <defs>
