@@ -10,5 +10,5 @@
   <text x="20" y="50" font-size="11" font-family="Segoe UI, sans-serif"
         fill="#8b949e">37h 20m active</text>
   <g clip-path="url(#bar-clip)"><rect x="20.0" y="70" width="263.5" height="22" fill="#c85f2e" /><rect x="285.5" y="70" width="112.1" height="22" fill="#5a8dee" /><rect x="399.6" y="70" width="0.4" height="22" fill="#999999" /></g>
-  <circle cx="20" cy="100" r="4" fill="#c85f2e" /><text x="30" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Opus 70%</text><circle cx="130" cy="100" r="4" fill="#5a8dee" /><text x="140" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Sonnet 30%</text><circle cx="240" cy="100" r="4" fill="#999999" /><text x="250" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Other 0%</text>
+  <circle cx="84.4" cy="100" r="4" fill="#c85f2e" /><text x="94.4" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Opus 70%</text><circle cx="172.0" cy="100" r="4" fill="#5a8dee" /><text x="182.0" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Sonnet 30%</text><circle cx="272.0" cy="100" r="4" fill="#999999" /><text x="282.0" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Other 0%</text>
 </svg>
