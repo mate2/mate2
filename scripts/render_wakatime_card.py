@@ -15,6 +15,7 @@ Usage: python3 render_wakatime_card.py <user_id> <output_svg_path> [top_n]
 """
 
 import json
+import math
 import sys
 import urllib.request
 
@@ -107,23 +108,40 @@ def section(lang_slices, cat_slices, y_off=0):
         )
         x_cursor += seg_w + gap
 
-    # One legend entry per line (not a horizontal row) -- category names are
-    # long enough ("Writing Docs", "Writing Tests") that a single row of 4
-    # would overflow the card width.
+    # 2-column x N-row grid, centered under the bar -- category names are long
+    # enough ("Writing Docs", "Writing Tests") that a single row would overflow,
+    # and a single left-aligned column left a lot of dead space to its right.
+    CHAR_W, DOT_TO_TEXT, COL_GAP = 6.2, 14, 40
+    n_cols = 2
+    labels = [f"{name} {100 * pct / grand_cat:.0f}%" for name, pct in cat_slices]
+    col_widths = [0] * n_cols
+    for i, label in enumerate(labels):
+        col = i % n_cols
+        col_widths[col] = max(col_widths[col], DOT_TO_TEXT + len(label) * CHAR_W)
+    grid_w = sum(col_widths) + COL_GAP * (n_cols - 1)
+    grid_x0 = bar_x + (bar_w - grid_w) / 2
+    col_x = [grid_x0 + sum(col_widths[:c]) + COL_GAP * c for c in range(n_cols)]
+
     cat_legend = []
-    clx = bar_x
     cly = bar_y + bar_h + 18
-    for i, (name, pct) in enumerate(cat_slices):
-        color = PALETTE[i] if i < len(PALETTE) and name != "Other" else OTHER_COLOR
-        cat_legend.append(
-            f'<circle cx="{clx}" cy="{cly}" r="4" fill="{color}" />'
-            f'<text x="{clx + 10}" y="{cly + 4}" font-size="11" font-family="Segoe UI, sans-serif" '
-            f'fill="{TEXT_PRIMARY}">{name} {pct:.0f}%</text>'
-        )
-        cly += row_h
+    n_rows = math.ceil(len(cat_slices) / n_cols)
+    for r in range(n_rows):
+        row_y = cly + r * row_h
+        for c in range(n_cols):
+            i = r * n_cols + c
+            if i >= len(cat_slices):
+                continue
+            name, pct = cat_slices[i]
+            color = PALETTE[i] if i < len(PALETTE) and name != "Other" else OTHER_COLOR
+            cat_legend.append(
+                f'<circle cx="{col_x[c]:.1f}" cy="{row_y}" r="4" fill="{color}" />'
+                f'<text x="{col_x[c] + 10:.1f}" y="{row_y + 4}" font-size="11" font-family="Segoe UI, sans-serif" '
+                f'fill="{TEXT_PRIMARY}">{labels[i]}</text>'
+            )
 
     clip_id = f"wk-bar-clip-{y_off}"
-    height = round((cly - row_h + 20) - y_off)
+    grid_bottom = cly + (n_rows - 1) * row_h
+    height = round((grid_bottom + 20) - y_off)
 
     fragment = f'''<defs>
     <clipPath id="{clip_id}"><rect x="{bar_x}" y="{bar_y}" width="{bar_w}" height="{bar_h}" rx="3" /></clipPath>
