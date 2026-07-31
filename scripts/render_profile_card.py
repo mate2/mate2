@@ -42,7 +42,8 @@ def build(claude_data_dir, codestats_username, wakatime_user_id, out_path, top_n
     cs_slices = render_codestats_card.top_languages(cs_data, top_n)
     y_cursor += DIVIDER_GAP
     sections.append(_divider(y_cursor - DIVIDER_GAP / 2))
-    fragment, h = render_codestats_card.section(cs_total_xp, cs_level, cs_slices, y_off=y_cursor)
+    cs_since = render_codestats_card.since_year(cs_data)
+    fragment, h = render_codestats_card.section(cs_total_xp, cs_level, cs_slices, y_off=y_cursor, since=cs_since)
     sections.append(fragment)
     y_cursor += h
 

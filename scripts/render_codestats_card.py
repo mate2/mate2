@@ -39,6 +39,11 @@ def level_for(xp):
     return math.floor(0.025 * math.sqrt(xp))
 
 
+def since_year(data):
+    dates = data.get("dates") or {}
+    return min(dates)[:4] if dates else None
+
+
 def top_languages(data, top_n):
     langs = sorted(data["languages"].items(), key=lambda x: -x[1]["xps"])
     top = langs[:top_n]
@@ -53,7 +58,7 @@ def format_xp(xp):
     return f"{xp:,}".replace(",", " ")
 
 
-def section(total_xp, level, slices, y_off=0):
+def section(total_xp, level, slices, y_off=0, since=None):
     """Return (svg_fragment, height) for this card's content, offset by y_off
     so it can be composed inside a larger multi-section SVG."""
     header_h = 70
@@ -74,11 +79,15 @@ def section(total_xp, level, slices, y_off=0):
         text_color=TEXT_PRIMARY,
     )
 
+    subtitle = f"{format_xp(total_xp)} XP &#183; Lvl. {level}"
+    if since:
+        subtitle += f" &#183; since {since}"
+
     fragment = f'''<g font-family="Segoe UI, sans-serif">
     <rect x="20" y="{y_off + 20}" width="16" height="16" rx="3" fill="none" stroke="{TEXT_PRIMARY}" stroke-width="1.6" />
     <text x="28" y="{y_off + 32}" font-size="10" font-weight="bold" fill="{TEXT_PRIMARY}" text-anchor="middle">::</text>
     <text x="44" y="{y_off + 33}" font-size="15" font-weight="bold" fill="{TEXT_PRIMARY}">Code::Stats</text>
-    <text x="20" y="{y_off + 52}" font-size="11" fill="{TEXT_SECONDARY}">{format_xp(total_xp)} XP &#183; Lvl. {level}</text>
+    <text x="20" y="{y_off + 52}" font-size="11" fill="{TEXT_SECONDARY}">{subtitle}</text>
   </g>
   {''.join(arcs)}
   {''.join(legend)}'''
@@ -86,9 +95,9 @@ def section(total_xp, level, slices, y_off=0):
     return fragment, height
 
 
-def render_svg(username, total_xp, level, slices, out_path):
+def render_svg(username, total_xp, level, slices, out_path, since=None):
     width = 420
-    fragment, height = section(total_xp, level, slices, y_off=0)
+    fragment, height = section(total_xp, level, slices, y_off=0, since=since)
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">
   <rect width="{width}" height="{height}" rx="10" fill="{SURFACE}" />
   {fragment}
@@ -107,7 +116,7 @@ def main():
     total_xp = data["total_xp"]
     level = level_for(total_xp)
     slices = top_languages(data, top_n)
-    render_svg(username, total_xp, level, slices, out_path)
+    render_svg(username, total_xp, level, slices, out_path, since=since_year(data))
     print(f"Rendered {out_path}: {format_xp(total_xp)} XP, Lvl {level}, top {top_n} languages")
 
 
