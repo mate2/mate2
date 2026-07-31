@@ -1,4 +1,4 @@
-name: Update Claude usage card
+name: Update profile stats card
 
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
           path: usage-data
 
       - name: Render card
-        run: python3 scripts/render_card.py usage-data claude-usage.svg
+        run: python3 scripts/render_profile_card.py usage-data mate2fr b8bb0b6e-7cc2-43fe-958a-eb92fa6aa446 claude-usage.svg
 
       - name: Commit card if changed
         run: |

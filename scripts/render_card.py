@@ -19,9 +19,9 @@ import sys
 from collections import defaultdict
 
 MODEL_COLORS = {
-    "opus": "#c85f2e",
-    "sonnet": "#5a8dee",
-    "haiku": "#2fa86e",
+    "opus": "#d9551a",
+    "sonnet": "#2b78dd",
+    "haiku": "#12a869",
 }
 DEFAULT_COLOR = "#999999"
 SURFACE = "#0d1117"
@@ -53,10 +53,15 @@ def format_duration(minutes):
     return f"{h}h {m:02d}m" if h else f"{m}m"
 
 
-def render_svg(totals, out_path):
+SECTION_HEIGHT = 120  # fixed height this section occupies when composed into a bigger card
+
+
+def section(totals, y_off=0, clip_id="claude-bar-clip"):
+    """Return (svg_fragment, height) for this card's content, offset by y_off
+    so it can be composed inside a larger multi-section SVG."""
     grand_total = sum(totals.values()) or 1
-    width, height = 420, 120
-    bar_x, bar_y, bar_w, bar_h = 20, 70, 380, 22
+    width = 420
+    bar_x, bar_y, bar_w, bar_h = 20, y_off + 70, 380, 22
     gap = 2  # surface-colored gap between stacked segments
 
     ranked = sorted(totals.items(), key=lambda x: -x[1])
@@ -82,7 +87,7 @@ def render_svg(totals, out_path):
     row_w = sum(item_widths) + ITEM_GAP * (len(labels) - 1)
 
     legend = []
-    ly = 100
+    ly = y_off + 100
     lx = bar_x + (bar_w - row_w) / 2
     for (model, minutes), label, item_w in zip(ranked, labels, item_widths):
         color = MODEL_COLORS.get(model, DEFAULT_COLOR)
@@ -93,19 +98,27 @@ def render_svg(totals, out_path):
         )
         lx += item_w + ITEM_GAP
 
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">
-  <defs>
-    <clipPath id="bar-clip">
+    fragment = f'''<defs>
+    <clipPath id="{clip_id}">
       <rect x="{bar_x}" y="{bar_y}" width="{bar_w}" height="{bar_h}" rx="4" />
     </clipPath>
   </defs>
-  <rect width="{width}" height="{height}" rx="10" fill="{SURFACE}" />
-  <text x="20" y="30" font-size="15" font-family="Segoe UI, sans-serif"
+  <text x="20" y="{y_off + 30}" font-size="15" font-family="Segoe UI, sans-serif"
         fill="#e6edf3" font-weight="bold">Claude Code — last 7 days</text>
-  <text x="20" y="50" font-size="11" font-family="Segoe UI, sans-serif"
+  <text x="20" y="{y_off + 50}" font-size="11" font-family="Segoe UI, sans-serif"
         fill="#8b949e">{format_duration(grand_total)} active</text>
-  <g clip-path="url(#bar-clip)">{''.join(segments)}</g>
-  {''.join(legend)}
+  <g clip-path="url(#{clip_id})">{''.join(segments)}</g>
+  {''.join(legend)}'''
+
+    return fragment, SECTION_HEIGHT
+
+
+def render_svg(totals, out_path):
+    width = 420
+    fragment, height = section(totals, y_off=0)
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">
+  <rect width="{width}" height="{height}" rx="10" fill="{SURFACE}" />
+  {fragment}
 </svg>'''
 
     with open(out_path, "w") as fh:
