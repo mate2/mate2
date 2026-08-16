@@ -8,8 +8,8 @@
   <text x="20" y="30" font-size="15" font-family="Segoe UI, sans-serif"
         fill="#e6edf3" font-weight="bold">Claude Code — last 7 days</text>
   <text x="20" y="50" font-size="11" font-family="Segoe UI, sans-serif"
-        fill="#8b949e">32h 57m active</text>
-  <g clip-path="url(#claude-bar-clip)"><rect x="20.0" y="70" width="364.2" height="22" fill="#d9551a" /><rect x="386.2" y="70" width="13.8" height="22" fill="#999999" /></g>
+        fill="#8b949e">30h 52m active</text>
+  <g clip-path="url(#claude-bar-clip)"><rect x="20.0" y="70" width="363.2" height="22" fill="#d9551a" /><rect x="385.2" y="70" width="14.8" height="22" fill="#999999" /></g>
   <circle cx="134.4" cy="100" r="4" fill="#d9551a" /><text x="144.4" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Opus 96%</text><circle cx="222.0" cy="100" r="4" fill="#999999" /><text x="232.0" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Other 4%</text><line x1="20" y1="128.0" x2="400" y2="128.0" stroke="#21262d" stroke-width="1" /><g font-family="Segoe UI, sans-serif">
     <rect x="20" y="156" width="16" height="16" rx="3" fill="none" stroke="#e6edf3" stroke-width="1.6" />
     <text x="28" y="168" font-size="10" font-weight="bold" fill="#e6edf3" text-anchor="middle">::</text>
