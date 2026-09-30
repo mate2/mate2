@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="654">
-  <rect width="420" height="654" rx="10" fill="#0d1117" />
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="618">
+  <rect width="420" height="618" rx="10" fill="#0d1117" />
   <defs>
     <clipPath id="claude-bar-clip">
       <rect x="20" y="70" width="380" height="22" rx="4" />
@@ -8,9 +8,9 @@
   <text x="20" y="30" font-size="15" font-family="Segoe UI, sans-serif"
         fill="#e6edf3" font-weight="bold">Claude Code — last 7 days</text>
   <text x="20" y="50" font-size="11" font-family="Segoe UI, sans-serif"
-        fill="#8b949e">3h 04m active</text>
-  <g clip-path="url(#claude-bar-clip)"><rect x="20.0" y="70" width="380.0" height="22" fill="#d9551a" /></g>
-  <circle cx="175.1" cy="100" r="4" fill="#d9551a" /><text x="185.1" y="104" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Opus 100%</text><line x1="20" y1="128.0" x2="400" y2="128.0" stroke="#21262d" stroke-width="1" /><g font-family="Segoe UI, sans-serif">
+        fill="#8b949e">1m active</text>
+  <g clip-path="url(#claude-bar-clip)"></g>
+  <line x1="20" y1="128.0" x2="400" y2="128.0" stroke="#21262d" stroke-width="1" /><g font-family="Segoe UI, sans-serif">
     <rect x="20" y="156" width="16" height="16" rx="3" fill="none" stroke="#e6edf3" stroke-width="1.6" />
     <text x="28" y="168" font-size="10" font-weight="bold" fill="#e6edf3" text-anchor="middle">::</text>
     <text x="44" y="169" font-size="15" font-weight="bold" fill="#e6edf3">Code::Stats</text>
@@ -25,8 +25,8 @@
     <text x="44" y="409" font-size="15" font-weight="bold" fill="#e6edf3">WakaTime</text>
     <text x="20" y="428" font-size="11" fill="#8b949e">Last 7 days activity</text>
   </g>
-  <circle cx="90" cy="501" r="45" fill="none" stroke="#d9551a" stroke-width="20" stroke-linecap="butt" stroke-dasharray="189.82 92.93" stroke-dashoffset="-0.00" transform="rotate(-90 90 501)" /><circle cx="90" cy="501" r="45" fill="none" stroke="#2b78dd" stroke-width="20" stroke-linecap="butt" stroke-dasharray="21.70 261.04" stroke-dashoffset="-190.68" transform="rotate(-90 90 501)" /><circle cx="90" cy="501" r="45" fill="none" stroke="#12a869" stroke-width="20" stroke-linecap="butt" stroke-dasharray="16.95 265.79" stroke-dashoffset="-213.25" transform="rotate(-90 90 501)" /><circle cx="90" cy="501" r="45" fill="none" stroke="#9c52d6" stroke-width="20" stroke-linecap="butt" stroke-dasharray="10.45 272.30" stroke-dashoffset="-231.06" transform="rotate(-90 90 501)" /><circle cx="90" cy="501" r="45" fill="none" stroke="#4b5563" stroke-width="20" stroke-linecap="butt" stroke-dasharray="39.51 243.23" stroke-dashoffset="-242.37" transform="rotate(-90 90 501)" />
-  <circle cx="200" cy="465" r="4" fill="#d9551a" /><text x="210" y="469" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Markdown 67%</text><circle cx="200" cy="483" r="4" fill="#2b78dd" /><text x="210" y="487" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">TypeScript 8%</text><circle cx="200" cy="501" r="4" fill="#12a869" /><text x="210" y="505" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">YAML 6%</text><circle cx="200" cy="519" r="4" fill="#9c52d6" /><text x="210" y="523" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">JSON 4%</text><circle cx="200" cy="537" r="4" fill="#4b5563" /><text x="210" y="541" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Other 14%</text>
-  <g clip-path="url(#wk-bar-clip-376)"><rect x="20.0" y="580.0" width="312.0" height="18" fill="#d9551a" /><rect x="334.0" y="580.0" width="61.6" height="18" fill="#2b78dd" /><rect x="397.6" y="580.0" width="2.4" height="18" fill="#12a869" /></g>
-  <circle cx="86.1" cy="616.0" r="4" fill="#d9551a" /><text x="96.1" y="620.0" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">AI Coding 83%</text><circle cx="220.7" cy="616.0" r="4" fill="#2b78dd" /><text x="230.7" y="620.0" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Writing Docs 17%</text><circle cx="86.1" cy="634.0" r="4" fill="#12a869" /><text x="96.1" y="638.0" font-size="11" font-family="Segoe UI, sans-serif" fill="#e6edf3">Coding 1%</text>
+  
+  
+  <g clip-path="url(#wk-bar-clip-376)"></g>
+  
 </svg>
